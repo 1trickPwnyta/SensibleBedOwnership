@@ -84,7 +84,7 @@ namespace SensibleBedOwnership
 
         public static IEnumerable<Pawn> AssigningCandidatesMatchingFilterNotAlreadyAssigned(CompAssignableToPawn comp)
         {
-            return comp.AssigningCandidates.Where(c => !comp.AssignedPawnsForReading.Contains(c) && AssignOwnerSearchWidget.filter.Matches(c.Name.ToStringShort));
+            return comp.AssigningCandidates.Where(c => !comp.AssignedPawnsForReading.Contains(c) && AssignOwnerSearchWidget.filter.Matches(c.LabelShort));
         }
 
         public static FloatMenuOption GetAssignToAssignableOption(Vector3 clickPos, Pawn pawn)
@@ -119,6 +119,24 @@ namespace SensibleBedOwnership
             }
 
             return null;
+        }
+
+        public static string LabelCapWithRelation(this Pawn pawn, CompAssignableToPawn comp)
+        {
+            DirectPawnRelation relation = comp.AssignedPawnsForReading.Where(p => LovePartnerRelationUtility.ExistingLoveRealtionshipBetween(pawn, p) != null).Select(p => LovePartnerRelationUtility.ExistingLoveRealtionshipBetween(pawn, p)).FirstOrDefault();
+            if (relation != null)
+            {
+                string relationLabel = relation.def.label;
+                if (relation.def.labelFemale != null && pawn.gender == Gender.Female)
+                {
+                    relationLabel = relation.def.labelFemale;
+                }
+                return pawn.LabelCap + (" (" + relationLabel + ")").Colorize(ColoredText.FactionColor_Neutral);
+            }
+            else
+            {
+                return pawn.LabelCap;
+            }
         }
     }
 }

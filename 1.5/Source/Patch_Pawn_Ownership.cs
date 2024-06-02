@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Verse;
@@ -31,7 +32,7 @@ namespace SensibleBedOwnership
         }
     }
 
-    // Unassign the pawn from a bed/deathrest casket on the new bed's map, unassign a pawn from this specific bed to make room for the new pawn
+    // Unassign the pawn from a bed/deathrest casket on the new bed's map, unassign a preferably-non-lover pawn from this specific bed to make room for the new pawn
     [HarmonyPatch(typeof(Pawn_Ownership))]
     [HarmonyPatch(nameof(Pawn_Ownership.ClaimBedIfNonMedical))]
     public static class Patch_Pawn_Ownership_ClaimBedIfNonMedical
@@ -42,7 +43,7 @@ namespace SensibleBedOwnership
             {
                 if (newBed.OwnersForReading.Count == newBed.SleepingSlotsCount)
                 {
-                    newBed.CompAssignableToPawn.TryUnassignPawn(newBed.OwnersForReading[newBed.OwnersForReading.Count - 1]);
+                    newBed.CompAssignableToPawn.TryUnassignPawn(newBed.OwnersForReading.Where(o => LovePartnerRelationUtility.ExistingLoveRealtionshipBetween(___pawn, o, false) == null).FirstOrFallback(newBed.OwnersForReading[newBed.OwnersForReading.Count - 1]));
                 }
             }
         }
