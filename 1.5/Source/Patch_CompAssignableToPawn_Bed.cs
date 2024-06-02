@@ -5,7 +5,7 @@ using Verse;
 
 namespace SensibleBedOwnership
 {
-    // Unassign the pawn from the bed attached to the comp
+    // Unassign the pawn from the bed attached to the comp, notify room assigned pawns changed for all assigned beds on all maps
     [HarmonyPatch(typeof(CompAssignableToPawn_Bed))]
     [HarmonyPatch(nameof(CompAssignableToPawn_Bed.TryUnassignPawn))]
     public static class Patch_CompAssignableToPawn_Bed_TryUnassignPawn

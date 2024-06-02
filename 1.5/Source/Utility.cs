@@ -22,9 +22,19 @@ namespace SensibleBedOwnership
             return AllAssignedBedsAndDeathrestCaskets(pawn).Where(b => b.def != ThingDefOf.DeathrestCasket).ToList();
         }
 
+        public static List<Building_Bed> AllAssignedDeathrestCaskets(Pawn pawn)
+        {
+            return AllAssignedBedsAndDeathrestCaskets(pawn).Where(b => b.def == ThingDefOf.DeathrestCasket).ToList();
+        }
+
         public static Building_Bed AssignedBed(Pawn pawn, Map map)
         {
             return AllAssignedBeds(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
+        }
+
+        public static Building_Bed AssignedDeathrestCasket(Pawn pawn, Map map)
+        {
+            return AllAssignedDeathrestCaskets(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
         }
 
         public static Building_Bed AssignedBedOnCurrentMap(Pawn pawn)
@@ -32,9 +42,23 @@ namespace SensibleBedOwnership
             return AssignedBed(pawn, pawn.Map);
         }
 
+        public static Building_Bed AssignedDeathrestCasketOnCurrentMap(Pawn pawn)
+        {
+            return AssignedDeathrestCasket(pawn, pawn.Map);
+        }
+
         public static void UnassignBed(Pawn pawn, Map map)
         {
             Building_Bed bed = AssignedBed(pawn, map);
+            if (bed != null)
+            {
+                bed.CompAssignableToPawn.TryUnassignPawn(pawn);
+            }
+        }
+
+        public static void UnassignDeathrestCasket(Pawn pawn, Map map)
+        {
+            Building_Bed bed = AssignedDeathrestCasket(pawn, map);
             if (bed != null)
             {
                 bed.CompAssignableToPawn.TryUnassignPawn(pawn);

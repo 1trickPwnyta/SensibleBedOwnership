@@ -10,12 +10,18 @@ namespace SensibleBedOwnership
         public static readonly FieldInfo f_Dialog_AssignBuildingOwner_assignable = AccessTools.Field(typeof(Dialog_AssignBuildingOwner), "assignable");
         public static readonly FieldInfo f_ThingComp_parent = AccessTools.Field(typeof(ThingComp), nameof(ThingComp.parent));
         public static readonly FieldInfo f_Pawn_Ownership_pawn = AccessTools.Field(typeof(Pawn_Ownership), "pawn");
+        public static readonly FieldInfo f_DirectPawnRelation_otherPawn = AccessTools.Field(typeof(DirectPawnRelation), nameof(DirectPawnRelation.otherPawn));
 
         public static readonly MethodInfo m_Utility_UnassignBed = AccessTools.Method(typeof(Utility), nameof(Utility.UnassignBed));
         public static readonly MethodInfo m_Utility_AssignableParentIsBed = AccessTools.Method(typeof(Utility), nameof(Utility.AssignableParentIsBed));
+        public static readonly MethodInfo m_Utility_AssignedBed = AccessTools.Method(typeof(Utility), nameof(Utility.AssignedBed));
+        public static readonly MethodInfo m_Utility_UnassignDeathrestCasket = AccessTools.Method(typeof(Utility), nameof(Utility.UnassignDeathrestCasket));
         public static readonly MethodInfo m_Pawn_Ownership_UnclaimBed = AccessTools.Method(typeof(Pawn_Ownership), nameof(Pawn_Ownership.UnclaimBed));
         public static readonly MethodInfo m_Pawn_Ownership_ClaimBedIfNonMedical = AccessTools.Method(typeof(Pawn_Ownership), nameof(Pawn_Ownership.ClaimBedIfNonMedical));
         public static readonly MethodInfo m_IdeoUIUtility_DoIdeoIcon = AccessTools.Method(typeof(IdeoUIUtility), nameof(IdeoUIUtility.DoIdeoIcon));
         public static readonly MethodInfo m_Thing_get_Map = AccessTools.Method(typeof(Thing), "get_Map");
+        public static readonly MethodInfo m_LovePartnerRelationUtility_ExistingMostLikedLovePartnerRel = AccessTools.Method(typeof(LovePartnerRelationUtility), nameof(LovePartnerRelationUtility.ExistingMostLikedLovePartnerRel));
+        public static readonly MethodInfo m_Pawn_Ownership_get_OwnedBed = AccessTools.Method(typeof(Pawn_Ownership), "get_OwnedBed");
+        public static readonly MethodInfo m_Pawn_Ownership_UnclaimDeathrestCasket = AccessTools.Method(typeof(Pawn_Ownership), nameof(Pawn_Ownership.UnclaimDeathrestCasket));
     }
 }
