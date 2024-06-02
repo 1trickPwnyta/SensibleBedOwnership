@@ -1,6 +1,8 @@
-﻿using RimWorld;
+﻿using HarmonyLib;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace SensibleBedOwnership
@@ -83,6 +85,40 @@ namespace SensibleBedOwnership
         public static IEnumerable<Pawn> AssigningCandidatesMatchingFilterNotAlreadyAssigned(CompAssignableToPawn comp)
         {
             return comp.AssigningCandidates.Where(c => !comp.AssignedPawnsForReading.Contains(c) && AssignOwnerSearchWidget.filter.Matches(c.Name.ToStringShort));
+        }
+
+        public static FloatMenuOption GetAssignToAssignableOption(Vector3 clickPos, Pawn pawn)
+        {
+            IntVec3 clickCell = IntVec3.FromVector3(clickPos);
+            if (clickCell.InBounds(pawn.Map) && !clickCell.Fogged(pawn.Map) && pawn.Map == Find.CurrentMap)
+            {
+                foreach (Thing thing in clickCell.GetThingList(pawn.Map))
+                {
+                    if (thing.TryGetComp<CompAssignableToPawn>() != null)
+                    {
+                        CompAssignableToPawn comp = (CompAssignableToPawn)thing.TryGetComp<CompAssignableToPawn>();
+                        if ((bool)typeof(CompAssignableToPawn).Method("ShouldShowAssignmentGizmo").Invoke(comp, new object[] { }))
+                        {
+                            if (comp.AssigningCandidates.Contains(pawn) && !comp.AssignedPawnsForReading.Contains(pawn))
+                            {
+                                if (!comp.IdeoligionForbids(pawn))
+                                {
+                                    return new FloatMenuOption("SensibleBedOwnership_AssignPawnToAssignable".Translate(pawn.Name.ToStringShort, thing.LabelCap), delegate ()
+                                    {
+                                        comp.TryAssignPawn(pawn);
+                                    });
+                                }
+                                else
+                                {
+                                    return new FloatMenuOption("SensibleBedOwnership_CannotAssignPawnToAssignable".Translate(pawn.Name.ToStringShort, thing.LabelCap) + ": " + "IdeoligionForbids".Translate(), null);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
