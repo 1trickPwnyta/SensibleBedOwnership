@@ -7,6 +7,7 @@ using Verse.Sound;
 
 namespace SensibleBedOwnership
 {
+    // Add unassign all gizmo
     [HarmonyPatch(typeof(CompAssignableToPawn))]
     [HarmonyPatch(nameof(CompAssignableToPawn.CompGetGizmosExtra))]
     public static class Patch_CompAssignableToPawn

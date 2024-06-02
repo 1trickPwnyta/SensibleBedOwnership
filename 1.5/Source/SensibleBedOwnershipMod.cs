@@ -1,4 +1,5 @@
 using HarmonyLib;
+using RimWorld;
 using Verse;
 
 namespace SensibleBedOwnership
@@ -12,6 +13,7 @@ namespace SensibleBedOwnership
         {
             var harmony = new Harmony(PACKAGE_ID);
             harmony.PatchAll();
+            harmony.Patch(typeof(Dialog_AssignBuildingOwner).Constructor(new[] { typeof(CompAssignableToPawn) }), null, typeof(Patch_Dialog_AssignBuildingOwner_ctor).Method("Postfix"));
 
             Log.Message($"[{PACKAGE_NAME}] Loaded.");
         }

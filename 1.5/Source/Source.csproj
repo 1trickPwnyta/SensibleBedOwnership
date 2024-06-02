@@ -58,6 +58,7 @@
     <Compile Include="Patch_CompAssignableToPawn.cs" />
     <Compile Include="Patch_CompAssignableToPawn_Bed.cs" />
     <Compile Include="Patch_CompAssignableToPawn_DeathrestCasket.cs" />
+    <Compile Include="Patch_Dialog_AssignBuildingOwner.cs" />
     <Compile Include="Patch_LovePartnerRelationUtility.cs" />
     <Compile Include="Patch_Pawn_AgeTracker.cs" />
     <Compile Include="Patch_RestUtility.cs" />

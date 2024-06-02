@@ -7,6 +7,8 @@ namespace SensibleBedOwnership
 {
     public static class Utility
     {
+        public static QuickSearchWidget AssignOwnerSearchWidget = new QuickSearchWidget();
+
         public static List<Building_Bed> AllAssignedBedsAndDeathrestCaskets(Pawn pawn)
         {
             List<Building_Bed> beds = new List<Building_Bed>();
@@ -76,6 +78,11 @@ namespace SensibleBedOwnership
         public static bool AssignableParentIsBed(CompAssignableToPawn comp)
         {
             return comp.parent is Building_Bed;
+        }
+
+        public static IEnumerable<Pawn> AssigningCandidatesMatchingFilterNotAlreadyAssigned(CompAssignableToPawn comp)
+        {
+            return comp.AssigningCandidates.Where(c => !comp.AssignedPawnsForReading.Contains(c) && AssignOwnerSearchWidget.filter.Matches(c.Name.ToStringShort));
         }
     }
 }
