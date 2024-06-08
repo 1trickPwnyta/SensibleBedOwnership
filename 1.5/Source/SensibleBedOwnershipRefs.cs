@@ -31,5 +31,6 @@ namespace SensibleBedOwnership
         public static readonly MethodInfo m_Entity_get_LabelCap = AccessTools.Method(typeof(Entity), "get_LabelCap");
         public static readonly MethodInfo m_SoundStarter_PlayOneShotOnCamera = AccessTools.Method(typeof(SoundStarter), nameof(SoundStarter.PlayOneShotOnCamera));
         public static readonly MethodInfo m_QuickSearchWidget_Reset = AccessTools.Method(typeof(QuickSearchWidget), nameof(QuickSearchWidget.Reset));
+        public static readonly MethodInfo m_Pawn_Ownership_UnclaimAll = AccessTools.Method(typeof(Pawn_Ownership), nameof(Pawn_Ownership.UnclaimAll));
     }
 }

@@ -155,4 +155,21 @@ namespace SensibleBedOwnership
             }
         }
     }
+
+    // Unclaim all beds and deathrest caskets instead of just the one on the current map
+    [HarmonyPatch(typeof(Pawn_Ownership))]
+    [HarmonyPatch(nameof(Pawn_Ownership.Notify_ChangedGuestStatus))]
+    public static class Patch_Pawn_Ownership_Notify_ChangedGuestStatus
+    {
+        public static void Postfix(Pawn ___pawn)
+        {
+            foreach (Building_Bed bed in Utility.AllAssignedBedsAndDeathrestCaskets(___pawn))
+            {
+                if ((bed.ForPrisoners && !___pawn.IsPrisoner && !PawnUtility.IsBeingArrested(___pawn)) || (!bed.ForPrisoners && ___pawn.IsPrisoner) || (bed.ForColonists && ___pawn.HostFaction == null))
+                {
+                    bed.CompAssignableToPawn.TryUnassignPawn(___pawn);
+                }
+            }
+        }
+    }
 }
