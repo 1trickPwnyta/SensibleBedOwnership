@@ -43,7 +43,22 @@ namespace SensibleBedOwnership
 
         public static Building_Bed AssignedBedOnCurrentMap(Pawn pawn)
         {
-            return AssignedBed(pawn, pawn.Map);
+            Map map = pawn.Map;
+            if (map == null)
+            {
+                if (pawn.ParentHolder != null)
+                {
+                    if (pawn.ParentHolder is Thing)
+                    {
+                        map = ((Thing)pawn.ParentHolder).Map;
+                    }
+                    else if (pawn.ParentHolder is ThingComp)
+                    {
+                        map = ((ThingComp)pawn.ParentHolder).parent.Map;
+                    }
+                }
+            }
+            return AssignedBed(pawn, map);
         }
 
         public static Building_Bed AssignedDeathrestCasketOnCurrentMap(Pawn pawn)
