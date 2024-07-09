@@ -116,16 +116,21 @@ namespace SensibleBedOwnership
                         {
                             if (comp.AssigningCandidates.Contains(pawn) && !comp.AssignedPawnsForReading.Contains(pawn))
                             {
-                                if (!comp.IdeoligionForbids(pawn))
+                                AcceptanceReport report = comp.CanAssignTo(pawn);
+                                if (!report.Accepted)
+                                {
+                                    return new FloatMenuOption("SensibleBedOwnership_CannotAssignPawnToAssignable".Translate(pawn.Name.ToStringShort, thing.LabelCap) + ": " + report.Reason.StripTags(), null);
+                                }
+                                else if (comp.IdeoligionForbids(pawn))
+                                {
+                                    return new FloatMenuOption("SensibleBedOwnership_CannotAssignPawnToAssignable".Translate(pawn.Name.ToStringShort, thing.LabelCap) + ": " + "IdeoligionForbids".Translate(), null);
+                                }
+                                else
                                 {
                                     return new FloatMenuOption("SensibleBedOwnership_AssignPawnToAssignable".Translate(pawn.Name.ToStringShort, thing.LabelCap), delegate ()
                                     {
                                         comp.TryAssignPawn(pawn);
                                     });
-                                }
-                                else
-                                {
-                                    return new FloatMenuOption("SensibleBedOwnership_CannotAssignPawnToAssignable".Translate(pawn.Name.ToStringShort, thing.LabelCap) + ": " + "IdeoligionForbids".Translate(), null);
                                 }
                             }
                         }
