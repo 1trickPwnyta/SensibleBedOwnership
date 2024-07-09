@@ -56,6 +56,10 @@ namespace SensibleBedOwnership
                     {
                         map = ((ThingComp)pawn.ParentHolder).parent.Map;
                     }
+                    else if (pawn.ParentHolder is Pawn_CarryTracker)
+                    {
+                        map = ((Pawn_CarryTracker)pawn.ParentHolder).pawn.Map;
+                    }
                 }
             }
             return AssignedBed(pawn, map);
