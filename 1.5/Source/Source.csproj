@@ -62,8 +62,8 @@
     <Compile Include="Patch_FloatMenuMakerMap.cs" />
     <Compile Include="Patch_InteractionWorker_MarriageProposal.cs" />
     <Compile Include="Patch_InteractionWorker_RomanceAttempt.cs" />
+    <Compile Include="Patch_LifeStageWorker_HumanlikeChild.cs" />
     <Compile Include="Patch_LovePartnerRelationUtility.cs" />
-    <Compile Include="Patch_Pawn_AgeTracker.cs" />
     <Compile Include="Patch_RestUtility.cs" />
     <Compile Include="Patch_SpouseRelationUtility.cs" />
     <Compile Include="Patch_InteractionWorker_Breakup.cs" />
