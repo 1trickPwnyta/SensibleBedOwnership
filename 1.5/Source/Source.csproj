@@ -64,6 +64,7 @@
     <Compile Include="Patch_InteractionWorker_RomanceAttempt.cs" />
     <Compile Include="Patch_LifeStageWorker_HumanlikeChild.cs" />
     <Compile Include="Patch_LovePartnerRelationUtility.cs" />
+    <Compile Include="Patch_ReservationManager.cs" />
     <Compile Include="Patch_RestUtility.cs" />
     <Compile Include="Patch_SpouseRelationUtility.cs" />
     <Compile Include="Patch_InteractionWorker_Breakup.cs" />
