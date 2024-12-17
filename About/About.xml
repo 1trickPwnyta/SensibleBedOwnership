@@ -14,6 +14,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - When assigning a second member to a double bed, brings the first member's love partners to the top of the list.
 - Adds an unassignment gizmo when you click on a bed.
 - Also applies these features to other colonist-assigned buildings, such as thrones and deathrest caskets.
+- Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
 10/02/2024: Immediately unassign babies from cribs when they become children
