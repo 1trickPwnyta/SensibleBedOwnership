@@ -20,6 +20,7 @@ namespace SensibleBedOwnership
         public static readonly MethodInfo m_Utility_UnassignDeathrestCasket = AccessTools.Method(typeof(Utility), nameof(Utility.UnassignDeathrestCasket));
         public static readonly MethodInfo m_Utility_AssigningCandidatesMatchingFilterNotAlreadyAssigned = AccessTools.Method(typeof(Utility), nameof(Utility.AssigningCandidatesMatchingFilterNotAlreadyAssigned));
         public static readonly MethodInfo m_Utility_LabelCapWithRelation = AccessTools.Method(typeof(Utility), nameof(Utility.LabelCapWithRelation));
+        public static readonly MethodInfo m_Utility_GetMapForFloatMenu = AccessTools.Method(typeof(Utility), nameof(Utility.GetMapForFloatMenu));
         public static readonly MethodInfo m_Pawn_Ownership_UnclaimBed = AccessTools.Method(typeof(Pawn_Ownership), nameof(Pawn_Ownership.UnclaimBed));
         public static readonly MethodInfo m_Pawn_Ownership_ClaimBedIfNonMedical = AccessTools.Method(typeof(Pawn_Ownership), nameof(Pawn_Ownership.ClaimBedIfNonMedical));
         public static readonly MethodInfo m_IdeoUIUtility_DoIdeoIcon = AccessTools.Method(typeof(IdeoUIUtility), nameof(IdeoUIUtility.DoIdeoIcon));

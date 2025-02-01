@@ -109,9 +109,10 @@ namespace SensibleBedOwnership
         public static FloatMenuOption GetAssignToAssignableOption(Vector3 clickPos, Pawn pawn)
         {
             IntVec3 clickCell = IntVec3.FromVector3(clickPos);
-            if (clickCell.InBounds(pawn.Map) && !clickCell.Fogged(pawn.Map) && pawn.Map == Find.CurrentMap)
+            Map map = pawn.GetMapForFloatMenu();
+            if (clickCell.InBounds(map) && !clickCell.Fogged(map) && map == Find.CurrentMap)
             {
-                foreach (Thing thing in clickCell.GetThingList(pawn.Map))
+                foreach (Thing thing in clickCell.GetThingList(map))
                 {
                     if (thing.TryGetComp<CompAssignableToPawn>() != null)
                     {
@@ -161,6 +162,11 @@ namespace SensibleBedOwnership
             {
                 return pawn.LabelCap;
             }
+        }
+
+        public static Map GetMapForFloatMenu(this Pawn pawn)
+        {
+            return pawn.Map ?? pawn.CarriedBy?.Map;
         }
     }
 }

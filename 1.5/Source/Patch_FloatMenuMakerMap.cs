@@ -1,16 +1,40 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine;
 using Verse;
+using Verse.AI.Group;
 
 namespace SensibleBedOwnership
 {
-    // Add assign to assignable order for able, controllable pawns
+    // Make smarter map check, add assign to assignable order for able, controllable pawns
     [HarmonyPatch(typeof(FloatMenuMakerMap))]
     [HarmonyPatch(nameof(FloatMenuMakerMap.ChoicesAtFor))]
     public static class Patch_FloatMenuMakerMap_ChoicesAtFor
     {
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        {
+            LocalBuilder mapLocal = il.DeclareLocal(typeof(Map));
+
+            yield return new CodeInstruction(OpCodes.Ldarg_1);
+            yield return new CodeInstruction(OpCodes.Call, SensibleBedOwnershipRefs.m_Utility_GetMapForFloatMenu);
+            yield return new CodeInstruction(OpCodes.Stloc_S, mapLocal);
+
+            foreach (CodeInstruction instruction in instructions)
+            {
+                if (instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == SensibleBedOwnershipRefs.m_Thing_get_Map)
+                {
+                    yield return new CodeInstruction(OpCodes.Pop);
+                    yield return new CodeInstruction(OpCodes.Ldloc_S, mapLocal);
+                    continue;
+                }
+
+                yield return instruction;
+            }
+        }
+
         public static void Postfix(Vector3 clickPos, Pawn pawn, ref List<FloatMenuOption> __result)
         {
             FloatMenuOption option = Utility.GetAssignToAssignableOption(clickPos, pawn);
@@ -29,14 +53,19 @@ namespace SensibleBedOwnership
         public static void Postfix(Pawn pawn)
         {
             bool showOption = false;
-            if ((bool)typeof(FloatMenuMakerMap).Method("CanTakeOrder").Invoke(null, new object[] { pawn }))
+            if (pawn.IsColonist)
             {
-                if (pawn.Downed || (ModsConfig.BiotechActive && pawn.Deathresting))
+                Lord lord;
+                if (!pawn.Spawned || pawn.Downed || pawn.InMentalState || (ModsConfig.BiotechActive && pawn.Deathresting) || (pawn.TryGetLord(out lord) && !lord.AllowsFloatMenu(pawn)))
                 {
                     showOption = true;
                 }
             }
-            else if (pawn.Map.mapPawns.PawnsInFaction(Faction.OfPlayer).Contains(pawn) && pawn.IsNonMutantAnimal)
+            else if (pawn.IsSlaveOfColony)
+            {
+                showOption = true;
+            }
+            else if (pawn.GetMapForFloatMenu().mapPawns.PawnsInFaction(Faction.OfPlayer).Contains(pawn) && pawn.IsNonMutantAnimal)
             {
                 showOption = true;
             }
