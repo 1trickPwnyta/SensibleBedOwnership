@@ -15,7 +15,7 @@ namespace SensibleBedOwnership
     {
         public static bool Prefix(Pawn ___pawn, ref Building_Bed __result)
         {
-            __result = Utility.AssignedBedOnCurrentMap(___pawn);
+            __result = Utility.GetMainBed(___pawn);
             return false;
         }
     }

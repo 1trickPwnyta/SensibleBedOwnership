@@ -41,28 +41,36 @@ namespace SensibleBedOwnership
             return AllAssignedDeathrestCaskets(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
         }
 
-        public static Building_Bed AssignedBedOnCurrentMap(Pawn pawn)
+        public static Building_Bed GetMainBed(Pawn pawn)
         {
-            Map map = pawn.Map;
-            if (map == null)
+            List<Building_Bed> allBeds = AllAssignedBeds(pawn);
+            if (allBeds.Count == 1)
             {
-                if (pawn.ParentHolder != null)
+                return allBeds[0];
+            }
+            else
+            {
+                Map map = pawn.Map;
+                if (map == null)
                 {
-                    if (pawn.ParentHolder is Thing)
+                    if (pawn.ParentHolder != null)
                     {
-                        map = ((Thing)pawn.ParentHolder).Map;
-                    }
-                    else if (pawn.ParentHolder is ThingComp)
-                    {
-                        map = ((ThingComp)pawn.ParentHolder).parent.Map;
-                    }
-                    else if (pawn.ParentHolder is Pawn_CarryTracker)
-                    {
-                        map = ((Pawn_CarryTracker)pawn.ParentHolder).pawn.Map;
+                        if (pawn.ParentHolder is Thing)
+                        {
+                            map = ((Thing)pawn.ParentHolder).Map;
+                        }
+                        else if (pawn.ParentHolder is ThingComp)
+                        {
+                            map = ((ThingComp)pawn.ParentHolder).parent.Map;
+                        }
+                        else if (pawn.ParentHolder is Pawn_CarryTracker)
+                        {
+                            map = ((Pawn_CarryTracker)pawn.ParentHolder).pawn.Map;
+                        }
                     }
                 }
+                return AssignedBed(pawn, map);
             }
-            return AssignedBed(pawn, map);
         }
 
         public static Building_Bed AssignedDeathrestCasketOnCurrentMap(Pawn pawn)
