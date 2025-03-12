@@ -43,10 +43,11 @@ namespace SensibleBedOwnership
 
         public static Building_Bed GetMainBed(Pawn pawn)
         {
+            Building_Bed bed;
             List<Building_Bed> allBeds = AllAssignedBeds(pawn);
             if (allBeds.Count == 1)
             {
-                return allBeds[0];
+                bed = allBeds[0];
             }
             else
             {
@@ -69,8 +70,21 @@ namespace SensibleBedOwnership
                         }
                     }
                 }
-                return AssignedBed(pawn, map);
+                bed = AssignedBed(pawn, map);
             }
+            if (bed == null)
+            {
+                IEnumerable<Building_Bed> homeBeds = allBeds.Where(b => b.Map.IsPlayerHome);
+                if (homeBeds.Any())
+                {
+                    bed = homeBeds.MinBy(b => b.Map.uniqueID);
+                }
+                else if (allBeds.Any())
+                {
+                    bed = allBeds.MinBy(b => b.Map.uniqueID);
+                }
+            }
+            return bed;
         }
 
         public static Building_Bed AssignedDeathrestCasketOnCurrentMap(Pawn pawn)
