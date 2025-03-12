@@ -11,7 +11,7 @@ namespace SensibleBedOwnership
     {
         public static bool Prefix(Pawn p, ref Pawn __result)
         {
-            Building_Bed bed = Utility.AssignedBedOnCurrentMap(p);
+            Building_Bed bed = Utility.GetMainBed(p);
             if (bed != null)
             {
                 bed.OwnersForReading.Where(o => o != p && o.Map == p.Map && !LovePartnerRelationUtility.LovePartnerRelationExists(p, o)).TryMinBy(o => p.relations.OpinionOf(o), out __result);
