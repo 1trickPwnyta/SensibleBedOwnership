@@ -3,6 +3,7 @@
 	<name>Sensible Bed Ownership</name>
 	<author>1trickPwnyta</author>
 	<packageId>sensiblebedownership.1trickPwnyta</packageId>
+	<modVersion>1.1.0</modVersion>
 	<supportedVersions>
 		<li>1.5</li>
 	</supportedVersions>
@@ -17,6 +18,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
+04/09/2025: Add chair-sleeping feature, prevent double bed reservations by the same pawn, use "main bed" for bed calculations instead of just whatever bed is on the current map (for lovers sharing beds or royalty bedroom requirements)
 10/02/2024: Immediately unassign babies from cribs when they become children
 
 === Credits ===
