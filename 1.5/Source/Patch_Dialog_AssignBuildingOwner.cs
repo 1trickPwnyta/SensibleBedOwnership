@@ -41,7 +41,6 @@ namespace SensibleBedOwnership
         public static void Postfix(CompAssignableToPawn ___assignable, Rect inRect)
         {
             Utility.AssignOwnerSearchWidget.OnGUI(new Rect(inRect.x, inRect.y + 20f, Window.QuickSearchSize.x, Window.QuickSearchSize.y));
-            Utility.AssignOwnerSearchWidget.Focus();
         }
     }
 
