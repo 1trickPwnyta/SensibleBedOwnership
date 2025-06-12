@@ -15,7 +15,7 @@ namespace SensibleBedOwnership
         public static bool Prefix(List<Pawn> selectedPawns, Vector3 clickPos, ref FloatMenuContext context, ref List<FloatMenuOption> __state)
         {
             __state = new List<FloatMenuOption>();
-            if (!selectedPawns.Any(p => FloatMenuMakerMap.ShouldGenerateFloatMenuForPawn(p) && p.CanTakeOrder) && Find.Selector.SelectedPawns.Count > 0)
+            if (clickPos.InBounds(Find.CurrentMap) && !selectedPawns.Any(p => FloatMenuMakerMap.ShouldGenerateFloatMenuForPawn(p) && p.CanTakeOrder) && Find.Selector.SelectedPawns.Count > 0)
             {
                 context = new FloatMenuContext(selectedPawns, clickPos, Find.CurrentMap);
                 if (context.ClickedCell.IsValid && context.ClickedCell.InBounds(Find.CurrentMap))
