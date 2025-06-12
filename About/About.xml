@@ -3,14 +3,15 @@
 	<name>Sensible Bed Ownership</name>
 	<author>1trickPwnyta</author>
 	<packageId>sensiblebedownership.1trickPwnyta</packageId>
-	<modVersion>1.1.1</modVersion>
+	<modVersion>1.2.0</modVersion>
 	<supportedVersions>
 		<li>1.5</li>
+		<li>1.6</li>
 	</supportedVersions>
 	<description>
 Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Everyone can have a bed assigned per map, so beds don't get unassigned while caravaning.
-- Adds the ability to select a colonist or animal and right-click on a bed to assign.
+- Adds the ability to select a colonist or animal and right-click on a bed to assign. Multiple selected pawns can be assigned to a double bed at once.
 - Adds a search bar to the bed assignment dialog.
 - When assigning a second member to a double bed, brings the first member's love partners to the top of the list.
 - Adds an unassignment gizmo when you click on a bed.
@@ -18,6 +19,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
+06/11/2025: Updated to 1.6, allow multiple selected pawns to be right-click assigned at once
 04/18/2025: Fix bed assignment dialog incompatibility with Steam Deck
 04/09/2025: Add chair-sleeping feature, prevent double bed reservations by the same pawn, use "main bed" for bed calculations instead of just whatever bed is on the current map (for lovers sharing beds or royalty bedroom requirements)
 10/02/2024: Immediately unassign babies from cribs when they become children
