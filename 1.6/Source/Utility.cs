@@ -2,23 +2,34 @@
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Verse;
 
 namespace SensibleBedOwnership
 {
     public static class Utility
     {
+        private static HashSet<Building_Bed> bedCache = new HashSet<Building_Bed>();
+        private static bool bedCacheDirty = true;
+
         public static QuickSearchWidget AssignOwnerSearchWidget = new QuickSearchWidget();
 
         public static List<Building_Bed> AllAssignedBedsAndDeathrestCaskets(Pawn pawn)
         {
-            List<Building_Bed> beds = new List<Building_Bed>();
-            foreach (Map map in Find.Maps)
+            if (bedCacheDirty)
             {
-                beds.AddRange(map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>().Where(b => b.OwnersForReading.Contains(pawn)));
+                bedCache = new HashSet<Building_Bed>();
+                foreach (Map map in Find.Maps)
+                {
+                    bedCache.AddRange(map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>());
+                }
+                bedCacheDirty = false;
             }
-            return beds;
+            return bedCache.Where(b => b.OwnersForReading.Contains(pawn)).ToList();
+        }
+
+        public static void SetBedCacheDirty()
+        {
+            bedCacheDirty = true;
         }
 
         public static List<Building_Bed> AllAssignedBeds(Pawn pawn)
@@ -125,7 +136,7 @@ namespace SensibleBedOwnership
 
         public static IEnumerable<Pawn> AssigningCandidatesMatchingFilterNotAlreadyAssigned(CompAssignableToPawn comp)
         {
-            return comp.AssigningCandidates.Where(c => !comp.AssignedPawnsForReading.Contains(c) && AssignOwnerSearchWidget.filter.Matches(c.LabelShort));
+            return comp.AssigningCandidates.Where(c => comp.CanAssignTo(c) && !comp.AssignedPawnsForReading.Contains(c) && AssignOwnerSearchWidget.filter.Matches(c.LabelShort));
         }
 
         public static string LabelCapWithRelation(this Pawn pawn, CompAssignableToPawn comp)

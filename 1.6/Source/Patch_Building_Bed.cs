@@ -7,7 +7,7 @@ namespace SensibleBedOwnership
     // Remove all assigned pawns without unclaiming their bed on their current map necessarily
     [HarmonyPatch(typeof(Building_Bed))]
     [HarmonyPatch("RemoveAllOwners")]
-    public static class Patch_Building_Bed
+    public static class Patch_Building_Bed_ResolveAllOwners
     {
         public static bool Prefix(Building_Bed __instance, bool destroyed)
         {
@@ -28,6 +28,28 @@ namespace SensibleBedOwnership
             }
 
             return false;
+        }
+    }
+
+    // Dirty the bed cache when bed is spawned
+    [HarmonyPatch(typeof(Building_Bed))]
+    [HarmonyPatch(nameof(Building_Bed.SpawnSetup))]
+    public static class Patch_Building_Bed_SpawnSetup
+    {
+        public static void Postfix()
+        {
+            Utility.SetBedCacheDirty();
+        }
+    }
+
+    // Dirty the bed cache when bed is despawned
+    [HarmonyPatch(typeof(Building_Bed))]
+    [HarmonyPatch(nameof(Building_Bed.DeSpawn))]
+    public static class Patch_Building_Bed_DeSpawn
+    {
+        public static void Postfix()
+        {
+            Utility.SetBedCacheDirty();
         }
     }
 }

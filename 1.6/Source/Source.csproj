@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Debug.cs" />
     <Compile Include="FloatMenuOptionProvider_AssignToAssignable.cs" />
+    <Compile Include="Patch_Building.cs" />
     <Compile Include="Patch_Building_Bed.cs" />
     <Compile Include="Patch_CompAssignableToPawn.cs" />
     <Compile Include="Patch_CompAssignableToPawn_Bed.cs" />

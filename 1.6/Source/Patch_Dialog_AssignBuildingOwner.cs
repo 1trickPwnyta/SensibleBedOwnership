@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
 using Verse;
+using Verse.Steam;
 
 namespace SensibleBedOwnership
 {
@@ -14,23 +15,23 @@ namespace SensibleBedOwnership
     [HarmonyPatch(nameof(Dialog_AssignBuildingOwner.DoWindowContents))]
     public static class Patch_Dialog_AssignBuildingOwner_DoWindowContents
     {
+        private static Dialog_AssignBuildingOwner focused = null;
+
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             bool madeRoomForSearch = false;
-            bool removedExtraSpace = false;
 
             foreach (CodeInstruction instruction in instructions)
             {
                 if (!madeRoomForSearch && instruction.operand is float && (float)instruction.operand == 20f)
                 {
-                    instruction.operand = 20f + Window.QuickSearchSize.y;
+                    instruction.operand = 20f + Window.QuickSearchSize.y + 6f;
                     madeRoomForSearch = true;
                 }
 
-                if (!removedExtraSpace && instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == SensibleBedOwnershipRefs.m_CompAssignableToPawn_get_AssigningCandidates)
+                if (instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == SensibleBedOwnershipRefs.m_CompAssignableToPawn_get_AssigningCandidates)
                 {
                     yield return new CodeInstruction(OpCodes.Call, SensibleBedOwnershipRefs.m_Utility_AssigningCandidatesMatchingFilterNotAlreadyAssigned);
-                    removedExtraSpace = true;
                     continue;
                 }
 
@@ -38,9 +39,14 @@ namespace SensibleBedOwnership
             }
         }
 
-        public static void Postfix(CompAssignableToPawn ___assignable, Rect inRect)
+        public static void Postfix(Dialog_AssignBuildingOwner __instance, CompAssignableToPawn ___assignable, Rect inRect)
         {
             Utility.AssignOwnerSearchWidget.OnGUI(new Rect(inRect.x, inRect.y + 20f, Window.QuickSearchSize.x, Window.QuickSearchSize.y));
+            if (!SteamDeck.IsSteamDeck && focused != __instance)
+            {
+                Utility.AssignOwnerSearchWidget.Focus();
+                focused = __instance;
+            }
         }
     }
 
@@ -71,11 +77,6 @@ namespace SensibleBedOwnership
     [HarmonyPatch("DrawUnassignedRow")]
     public static class Patch_Dialog_AssignBuildingOwner_DrawUnassignedRow
     {
-        public static bool Prefix(CompAssignableToPawn ___assignable, Pawn pawn)
-        {
-            return Utility.AssigningCandidatesMatchingFilterNotAlreadyAssigned(___assignable).Contains(pawn);
-        }
-
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             foreach (CodeInstruction instruction in instructions)
