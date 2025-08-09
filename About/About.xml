@@ -19,6 +19,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
+08/08/2025: Improve performance and fix some minor UI bugs
 06/12/2025: Fix error when right-clicking out of bounds with a pawn selected in certain situations
 06/11/2025: Updated to 1.6, allow multiple selected pawns to be right-click assigned at once
 04/18/2025: Fix bed assignment dialog incompatibility with Steam Deck
