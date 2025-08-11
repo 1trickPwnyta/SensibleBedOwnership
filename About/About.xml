@@ -3,7 +3,7 @@
 	<name>Sensible Bed Ownership</name>
 	<author>1trickPwnyta</author>
 	<packageId>sensiblebedownership.1trickPwnyta</packageId>
-	<modVersion>1.2.2</modVersion>
+	<modVersion>1.2.3</modVersion>
 	<supportedVersions>
 		<li>1.5</li>
 		<li>1.6</li>
@@ -19,6 +19,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
+08/10/2025: Fix potential bug that causes errors when bed cache isn't properly cleared between loading saved games
 08/08/2025: Improve performance and fix some minor UI bugs
 06/12/2025: Fix error when right-clicking out of bounds with a pawn selected in certain situations
 06/11/2025: Updated to 1.6, allow multiple selected pawns to be right-click assigned at once

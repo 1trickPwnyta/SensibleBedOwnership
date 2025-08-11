@@ -89,12 +89,6 @@ namespace SensibleBedOwnership
                     continue;
                 }
 
-                if (instruction.opcode == OpCodes.Call && instruction.operand is MethodInfo && (MethodInfo)instruction.operand == SensibleBedOwnershipRefs.m_SoundStarter_PlayOneShotOnCamera)
-                {
-                    yield return new CodeInstruction(OpCodes.Ldsfld, SensibleBedOwnershipRefs.f_Utility_AssignOwnerSearchWidget);
-                    yield return new CodeInstruction(OpCodes.Call, SensibleBedOwnershipRefs.m_QuickSearchWidget_Reset);
-                }
-
                 yield return instruction;
             }
         }
