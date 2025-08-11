@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -43,12 +44,28 @@ namespace SensibleBedOwnership
 
         public static Building_Bed AssignedBed(Pawn pawn, Map map)
         {
-            return AllAssignedBeds(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
+            try
+            {
+                return AllAssignedBeds(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("Exception checking assigned bed for " + pawn + " on map " + map + ": " + e, "SensibleBedOwnership_ErrorAssignedBed".GetHashCode());
+                return null;
+            }
         }
 
         public static Building_Bed AssignedDeathrestCasket(Pawn pawn, Map map)
         {
-            return AllAssignedDeathrestCaskets(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
+            try
+            {
+                return AllAssignedDeathrestCaskets(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("Exception checking assigned deathrest casket for " + pawn + " on map " + map + ": " + e, "SensibleBedOwnership_ErrorAssignedDeathrestCasket".GetHashCode());
+                return null;
+            }
         }
 
         public static Building_Bed GetMainBed(Pawn pawn)
@@ -97,9 +114,14 @@ namespace SensibleBedOwnership
             return bed;
         }
 
+        public static Building_Bed AssignedBedOnCurrentMap(Pawn pawn)
+        {
+            return AssignedBed(pawn, pawn.SpawnedParentOrMe?.Map);
+        }
+
         public static Building_Bed AssignedDeathrestCasketOnCurrentMap(Pawn pawn)
         {
-            return AssignedDeathrestCasket(pawn, pawn.Map);
+            return AssignedDeathrestCasket(pawn, pawn.SpawnedParentOrMe?.Map);
         }
 
         public static void UnassignBed(Pawn pawn, Map map)

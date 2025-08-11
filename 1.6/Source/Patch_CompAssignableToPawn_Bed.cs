@@ -27,6 +27,18 @@ namespace SensibleBedOwnership
         }
     }
 
+    // Only count a pawn as assigned anything if on the same map
+    [HarmonyPatch(typeof(CompAssignableToPawn_Bed))]
+    [HarmonyPatch(nameof(CompAssignableToPawn_Bed.AssignedAnything))]
+    public static class Patch_CompAssignableToPawn_Bed_AssignedAnything
+    {
+        public static bool Prefix(Pawn pawn, ref bool __result)
+        {
+            __result = Utility.AssignedBedOnCurrentMap(pawn) != null;
+            return false;
+        }
+    }
+
     // Don't cross-reference assigned pawns with their ownership since we don't track it separately
     [HarmonyPatch(typeof(CompAssignableToPawn_Bed))]
     [HarmonyPatch("PostPostExposeData")]

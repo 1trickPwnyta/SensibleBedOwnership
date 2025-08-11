@@ -68,6 +68,7 @@
     <Compile Include="Patch_LifeStageWorker_HumanlikeChild.cs" />
     <Compile Include="Patch_LovePartnerRelationUtility.cs" />
     <Compile Include="Patch_MemoryUtility.cs" />
+    <Compile Include="Patch_Pawn.cs" />
     <Compile Include="Patch_ReservationManager.cs" />
     <Compile Include="Patch_RestUtility.cs" />
     <Compile Include="Patch_SpouseRelationUtility.cs" />
