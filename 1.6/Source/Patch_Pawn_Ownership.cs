@@ -61,6 +61,7 @@ namespace SensibleBedOwnership
                     yield return new CodeInstruction(OpCodes.Ldfld, SensibleBedOwnershipRefs.f_Pawn_Ownership_pawn);
                     yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Callvirt, SensibleBedOwnershipRefs.m_Thing_get_Map);
+                    yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Call, SensibleBedOwnershipRefs.m_Utility_UnassignDeathrestCasket);
                     unassignedDeathrestCasket = true;
                     continue;
@@ -72,6 +73,7 @@ namespace SensibleBedOwnership
                     yield return new CodeInstruction(OpCodes.Ldfld, SensibleBedOwnershipRefs.f_Pawn_Ownership_pawn);
                     yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Callvirt, SensibleBedOwnershipRefs.m_Thing_get_Map);
+                    yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Call, SensibleBedOwnershipRefs.m_Utility_UnassignBed);
                     unassignedBed = true;
                     continue;
@@ -107,6 +109,7 @@ namespace SensibleBedOwnership
                     yield return new CodeInstruction(OpCodes.Ldfld, SensibleBedOwnershipRefs.f_Pawn_Ownership_pawn);
                     yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Callvirt, SensibleBedOwnershipRefs.m_Thing_get_Map);
+                    yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Call, SensibleBedOwnershipRefs.m_Utility_UnassignDeathrestCasket);
                     unassignedDeathrestCasket = true;
                     continue;
@@ -117,7 +120,7 @@ namespace SensibleBedOwnership
         }
     }
 
-    // Do not unclaim or claim any beds on file load
+    // Do not unclaim or claim any beds on file load and save/load preferred bed
     [HarmonyPatch(typeof(Pawn_Ownership))]
     [HarmonyPatch(nameof(Pawn_Ownership.ExposeData))]
     public static class Patch_Pawn_Ownership_ExposeData
@@ -139,6 +142,17 @@ namespace SensibleBedOwnership
 
                 yield return instruction;
             }
+        }
+
+        public static void Postfix(Pawn ___pawn)
+        {
+            Building_Bed preferredBed = ___pawn.GetPreferredBed();
+            if (Scribe.mode == LoadSaveMode.Saving && preferredBed.DestroyedOrNull())
+            {
+                preferredBed = null;
+            }
+            Scribe_References.Look(ref preferredBed, "preferredBed");
+            ___pawn.SetPreferredBed(preferredBed);
         }
     }
 

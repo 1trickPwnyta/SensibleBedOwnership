@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿using HarmonyLib;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,28 @@ namespace SensibleBedOwnership
     {
         private static HashSet<Building_Bed> bedCache = new HashSet<Building_Bed>();
         private static bool bedCacheDirty = true;
+        private static Dictionary<Pawn, Building_Bed> preferredBeds = new Dictionary<Pawn, Building_Bed>();
 
         public static QuickSearchWidget AssignOwnerSearchWidget = new QuickSearchWidget();
+
+        private static bool OnSubstructure(Thing thing)
+        {
+            TerrainGrid grid = thing.Map.terrainGrid;
+            if (GenAdj.CellsOccupiedBy(thing).All(c => grid.FoundationAt(c) == TerrainDefOf.Substructure))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private static float AssignableSelectionWeight(CompAssignableToPawn comp, Pawn pawn)
+        {
+            if (pawn.GetPreferredBed() == comp.parent)
+            {
+                return float.MaxValue;
+            }
+            return OnSubstructure(comp.parent) ? -1f : 1f;
+        }
 
         public static List<Building_Bed> AllAssignedBedsAndDeathrestCaskets(Pawn pawn)
         {
@@ -32,6 +53,18 @@ namespace SensibleBedOwnership
             bedCacheDirty = true;
         }
 
+        public static void ClearPreferredBeds()
+        {
+            preferredBeds.Clear();
+        }
+
+        public static Building_Bed GetPreferredBed(this Pawn pawn) => preferredBeds.TryGetValue(pawn);
+
+        public static void SetPreferredBed(this Pawn pawn, Building_Bed bed)
+        {
+            preferredBeds[pawn] = bed;
+        }
+
         public static List<Building_Bed> AllAssignedBeds(Pawn pawn)
         {
             return AllAssignedBedsAndDeathrestCaskets(pawn).Where(b => b.def != ThingDefOf.DeathrestCasket).ToList();
@@ -42,11 +75,11 @@ namespace SensibleBedOwnership
             return AllAssignedBedsAndDeathrestCaskets(pawn).Where(b => b.def == ThingDefOf.DeathrestCasket).ToList();
         }
 
-        public static Building_Bed AssignedBed(Pawn pawn, Map map)
+        public static Building_Bed AssignedBed(Pawn pawn, Map map, bool allowDeathrestCaskets = false)
         {
             try
             {
-                return AllAssignedBeds(pawn).Where(b => b.Map != null && b.Map == map).FirstOrDefault();
+                return (allowDeathrestCaskets ? AllAssignedBedsAndDeathrestCaskets(pawn) : AllAssignedBeds(pawn)).Where(b => b.Map != null && b.Map == map).MaxBy(b => AssignableSelectionWeight(b.CompAssignableToPawn, pawn));
             }
             catch (Exception e)
             {
@@ -68,10 +101,12 @@ namespace SensibleBedOwnership
             }
         }
 
+        public static Building_Bed GetMainBed(Pawn_Ownership ownership) => GetMainBed(typeof(Pawn_Ownership).Field("pawn").GetValue(ownership) as Pawn);
+
         public static Building_Bed GetMainBed(Pawn pawn)
         {
             Building_Bed bed;
-            List<Building_Bed> allBeds = AllAssignedBeds(pawn);
+            List<Building_Bed> allBeds = AllAssignedBedsAndDeathrestCaskets(pawn);
             if (allBeds.Count == 1)
             {
                 bed = allBeds[0];
@@ -97,7 +132,7 @@ namespace SensibleBedOwnership
                         }
                     }
                 }
-                bed = AssignedBed(pawn, map);
+                bed = AssignedBed(pawn, map, true);
             }
             if (bed == null)
             {
@@ -124,21 +159,27 @@ namespace SensibleBedOwnership
             return AssignedDeathrestCasket(pawn, pawn.SpawnedParentOrMe?.Map);
         }
 
-        public static void UnassignBed(Pawn pawn, Map map)
+        public static void UnassignBed(Pawn pawn, Map map, Building_Bed newBed)
         {
-            Building_Bed bed = AssignedBed(pawn, map);
-            if (bed != null)
+            if (newBed != null)
             {
-                bed.CompAssignableToPawn.TryUnassignPawn(pawn);
+                bool onSubstructure = OnSubstructure(newBed);
+                foreach (Building_Bed bed in AllAssignedBeds(pawn).Where(b => b.Map != null && b.Map == map && OnSubstructure(b) == onSubstructure))
+                {
+                    bed.CompAssignableToPawn.TryUnassignPawn(pawn);
+                }
             }
         }
 
-        public static void UnassignDeathrestCasket(Pawn pawn, Map map)
+        public static void UnassignDeathrestCasket(Pawn pawn, Map map, Building_Bed newDeathrestCasket)
         {
-            Building_Bed bed = AssignedDeathrestCasket(pawn, map);
-            if (bed != null)
+            if (newDeathrestCasket != null)
             {
-                bed.CompAssignableToPawn.TryUnassignPawn(pawn);
+                bool onSubstructure = OnSubstructure(newDeathrestCasket);
+                foreach (Building_Bed deathrestCasket in AllAssignedDeathrestCaskets(pawn).Where(b => b.Map != null && b.Map == map && OnSubstructure(b) == onSubstructure))
+                {
+                    deathrestCasket.CompAssignableToPawn.TryUnassignPawn(pawn);
+                }
             }
         }
 

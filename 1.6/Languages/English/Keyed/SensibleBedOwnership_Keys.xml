@@ -2,6 +2,8 @@
 <LanguageData>
 	<SensibleBedOwnership_UnassignAll>Unassign all</SensibleBedOwnership_UnassignAll>
 	<SensibleBedOwnership_UnassignAllDesc>Unassigns all current owners.</SensibleBedOwnership_UnassignAllDesc>
+	<SensibleBedOwnership_PreferredBed>Preferred bed ({0})</SensibleBedOwnership_PreferredBed>
+	<SensibleBedOwnership_PreferredBedDesc>Whether this pawn will prefer to sleep in this bed whenever possible.</SensibleBedOwnership_PreferredBedDesc>
 	<SensibleBedOwnership_AssignPawnToAssignable>Assign {0} to {1}</SensibleBedOwnership_AssignPawnToAssignable>
 	<SensibleBedOwnership_CannotAssignPawnToAssignable>Cannot assign {0} to {1}</SensibleBedOwnership_CannotAssignPawnToAssignable>
 	<SensibleBedOwnership_ShowNonLovers>Show non-lovers</SensibleBedOwnership_ShowNonLovers>

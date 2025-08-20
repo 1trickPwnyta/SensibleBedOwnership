@@ -11,6 +11,7 @@ namespace SensibleBedOwnership
         public static void Postfix()
         {
             Utility.SetBedCacheDirty();
+            Utility.ClearPreferredBeds();
         }
     }
 }

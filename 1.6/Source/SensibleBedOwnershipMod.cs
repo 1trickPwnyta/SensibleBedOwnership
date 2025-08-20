@@ -1,10 +1,22 @@
 using HarmonyLib;
 using RimWorld;
+using System;
 using UnityEngine;
 using Verse;
 
 namespace SensibleBedOwnership
 {
+    [StaticConstructorOnStartup]
+    public static class SensibleBedOwnershipInitializer
+    {
+        static SensibleBedOwnershipInitializer()
+        {
+            var harmony = new Harmony(SensibleBedOwnershipMod.PACKAGE_ID);
+            harmony.PatchAll();
+            harmony.Patch(typeof(Dialog_AssignBuildingOwner).Constructor(new[] { typeof(CompAssignableToPawn) }), null, typeof(Patch_Dialog_AssignBuildingOwner_ctor).Method("Postfix"));
+        }
+    }
+
     public class SensibleBedOwnershipMod : Mod
     {
         public const string PACKAGE_ID = "sensiblebedownership.1trickPwnyta";
@@ -14,10 +26,6 @@ namespace SensibleBedOwnership
 
         public SensibleBedOwnershipMod(ModContentPack content) : base(content)
         {
-            var harmony = new Harmony(PACKAGE_ID);
-            harmony.PatchAll();
-            harmony.Patch(typeof(Dialog_AssignBuildingOwner).Constructor(new[] { typeof(CompAssignableToPawn) }), null, typeof(Patch_Dialog_AssignBuildingOwner_ctor).Method("Postfix"));
-
             Settings = GetSettings<SensibleBedOwnershipSettings>();
 
             Log.Message($"[{PACKAGE_NAME}] Loaded.");
