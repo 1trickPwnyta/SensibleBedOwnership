@@ -3,7 +3,7 @@
 	<name>Sensible Bed Ownership</name>
 	<author>1trickPwnyta</author>
 	<packageId>sensiblebedownership.1trickPwnyta</packageId>
-	<modVersion>1.2.4</modVersion>
+	<modVersion>1.2.5</modVersion>
 	<supportedVersions>
 		<li>1.5</li>
 		<li>1.6</li>
@@ -19,6 +19,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
+??/??/????: Support for gravships by allowing one bed per pawn per map on substructure and one not on substructure. Pawns will prefer the non-gravship bed by default but this can be overriden by setting the gravship bed to their preferred bed via bed gizmo.
 08/11/2025: Fix broken save files from previous bug, add additional safeguard to prevent broken saves
 08/10/2025: Fix potential bug that causes errors when bed cache isn't properly cleared between loading saved games
 08/08/2025: Improve performance and fix some minor UI bugs
