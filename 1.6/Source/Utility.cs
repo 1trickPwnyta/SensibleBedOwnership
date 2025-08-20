@@ -79,7 +79,8 @@ namespace SensibleBedOwnership
         {
             try
             {
-                return (allowDeathrestCaskets ? AllAssignedBedsAndDeathrestCaskets(pawn) : AllAssignedBeds(pawn)).Where(b => b.Map != null && b.Map == map).MaxBy(b => AssignableSelectionWeight(b.CompAssignableToPawn, pawn));
+                (allowDeathrestCaskets ? AllAssignedBedsAndDeathrestCaskets(pawn) : AllAssignedBeds(pawn)).Where(b => b.Map != null && b.Map == map).TryMaxBy(b => AssignableSelectionWeight(b.CompAssignableToPawn, pawn), out Building_Bed bed);
+                return bed;
             }
             catch (Exception e)
             {
