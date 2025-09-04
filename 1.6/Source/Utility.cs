@@ -17,10 +17,21 @@ namespace SensibleBedOwnership
 
         private static bool OnSubstructure(Thing thing)
         {
-            TerrainGrid grid = thing.Map.terrainGrid;
-            if (GenAdj.CellsOccupiedBy(thing).All(c => grid.FoundationAt(c) == TerrainDefOf.Substructure))
+#if DEBUG
+            if (Prefs.DevMode)
             {
-                return true;
+                if (thing == null) Debug.Log("thing is null");
+                else if (thing.Map == null) Debug.Log("thing.Map is null");
+                else if (thing.Map.terrainGrid == null) Debug.Log("thing.Map.terrainGrid is null");
+            }
+#endif
+            if (thing?.Map?.terrainGrid != null)
+            {
+                TerrainGrid grid = thing.Map.terrainGrid;
+                if (GenAdj.CellsOccupiedBy(thing).All(c => grid.FoundationAt(c) == TerrainDefOf.Substructure))
+                {
+                    return true;
+                }
             }
             return false;
         }
