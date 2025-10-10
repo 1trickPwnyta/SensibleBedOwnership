@@ -21,7 +21,7 @@ namespace SensibleBedOwnership
             {
                 if ((bool)typeof(CompAssignableToPawn).Method("ShouldShowAssignmentGizmo").Invoke(comp, new object[] { }))
                 {
-                    HashSet<Pawn> pawns = Find.Selector.SelectedPawns.Where(p => p.Faction != null && p.Faction.IsPlayer && comp.AssigningCandidates.Contains(p)).ToHashSet();
+                    HashSet<Pawn> pawns = Find.Selector.SelectedPawns.Where(p => p.IsFreeColonist).ToHashSet();
                     if (pawns.Count > 1)
                     {
                         pawns.RemoveWhere(p => !comp.CanAssignTo(p));
