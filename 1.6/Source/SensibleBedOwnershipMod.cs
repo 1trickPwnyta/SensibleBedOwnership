@@ -1,6 +1,6 @@
 using HarmonyLib;
 using RimWorld;
-using System;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -14,6 +14,12 @@ namespace SensibleBedOwnership
             var harmony = new Harmony(SensibleBedOwnershipMod.PACKAGE_ID);
             harmony.PatchAll();
             harmony.Patch(typeof(Dialog_AssignBuildingOwner).Constructor(new[] { typeof(CompAssignableToPawn) }), null, typeof(Patch_Dialog_AssignBuildingOwner_ctor).Method("Postfix"));
+            
+            MethodBase reverseCommands = AccessTools.TypeByName("ReverseCommands.Tools")?.Method("GetPawnActions");
+            if (reverseCommands != null)
+            {
+                harmony.Patch(reverseCommands, transpiler: typeof(CompatibilityPatch_ReverseCommands).Method(nameof(CompatibilityPatch_ReverseCommands.Transpiler)));
+            }
         }
     }
 

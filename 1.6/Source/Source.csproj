@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompatibilityPatch_ReverseCommands.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="FloatMenuOptionProvider_AssignToAssignable.cs" />
     <Compile Include="Patch_Building.cs" />

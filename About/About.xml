@@ -3,7 +3,7 @@
 	<name>Sensible Bed Ownership</name>
 	<author>1trickPwnyta</author>
 	<packageId>sensiblebedownership.1trickPwnyta</packageId>
-	<modVersion>1.2.7</modVersion>
+	<modVersion>1.2.8</modVersion>
 	<supportedVersions>
 		<li>1.5</li>
 		<li>1.6</li>
@@ -19,6 +19,7 @@ Makes the bed ownership/assignment mechanic sensible. Specifically:
 - Allows pawns to find a chair to sleep in instead of resorting to the ground when no bed is available because chairs still provide comfort when sleeping (can be turned off in settings).
 
 === Updates ===
+11/23/2025: Fix bugs with right-click assigning animals to beds and being able to assign humans to animal beds
 10/09/2025: Add compatibility with Reverse Commands
 09/03/2025: Add additional logging in dev mode
 08/26/2025: Support for gravships by allowing one bed per pawn per map on substructure and one not on substructure. Pawns will prefer the non-gravship bed by default but this can be overriden by setting the gravship bed to their preferred bed via bed gizmo.
